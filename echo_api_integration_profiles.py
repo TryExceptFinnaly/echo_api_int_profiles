@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, send_from_directory, render_template, request
 from flask_restful import Api
@@ -17,7 +18,7 @@ def odii():
     if request.method == 'POST':
         print(request)
         print(request.headers)
-        print(request.data.decode(encoding='UTF-8'))
+        print(json.loads(request.data))
         return '', 201
     else:
         return render_template('index.html')
@@ -28,7 +29,7 @@ def eris():
     if request.method == 'POST':
         print(request)
         print(request.headers)
-        print(request.data.decode())
+        print(json.loads(request.data))
         return '', 201
     else:
         return render_template('index.html')
