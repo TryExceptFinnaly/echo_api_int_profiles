@@ -23,6 +23,17 @@ def odii():
         return render_template('index.html')
 
 
+@app.route('/conclusion/full', methods=('GET', 'POST'))
+def eris():
+    if request.method == 'POST':
+        print(request)
+        print(request.headers)
+        print(request.data.decode())
+        return '', 201
+    else:
+        return render_template('index.html')
+
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico',
@@ -30,5 +41,5 @@ def favicon():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True, port=80)
     # ssl_context=('certificate/cert.pem', 'certificate/key.pem'))
