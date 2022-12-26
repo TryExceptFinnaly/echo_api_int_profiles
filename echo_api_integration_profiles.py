@@ -5,6 +5,7 @@ from flask import Flask, send_from_directory, render_template, request
 from flask_restful import Api
 
 app = Flask(__name__)
+app.logger.setLevel('INFO')
 api = Api(app)
 
 
@@ -16,9 +17,8 @@ def index():
 @app.route('/odii/', methods=('GET', 'POST'))
 def odii():
     if request.method == 'POST':
-        print(request)
-        print(request.headers)
-        print(json.loads(request.data))
+        app.logger.info(request.headers)
+        app.logger.info(json.loads(request.data))
         return '', 201
     else:
         return render_template('index.html')
@@ -27,9 +27,8 @@ def odii():
 @app.route('/conclusion/full', methods=('GET', 'POST'))
 def eris():
     if request.method == 'POST':
-        print(request)
-        print(request.headers)
-        print(json.loads(request.data))
+        app.logger.info(request.headers)
+        app.logger.info(json.loads(request.data))
         return '', 201
     else:
         return render_template('index.html')
