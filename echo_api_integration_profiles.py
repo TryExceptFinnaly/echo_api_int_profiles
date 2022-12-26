@@ -17,8 +17,8 @@ def index():
 @app.route('/odii/', methods=('GET', 'POST'))
 def odii():
     if request.method == 'POST':
-        app.logger.info(request.headers)
-        app.logger.info(json.loads(request.data))
+        app.logger.info(f'Headers:\n{request.headers}')
+        app.logger.info(f'Body Data:\n{json.loads(request.data)}')
         return '', 201
     else:
         return render_template('index.html')
@@ -27,8 +27,8 @@ def odii():
 @app.route('/conclusion/full', methods=('GET', 'POST'))
 def eris():
     if request.method == 'POST':
-        app.logger.info(request.headers)
-        app.logger.info(json.loads(request.data))
+        app.logger.info(f'Headers:\n{request.headers}')
+        app.logger.info(f'Body Data:\n{json.loads(request.data)}')
         return '', 201
     else:
         return render_template('index.html')
