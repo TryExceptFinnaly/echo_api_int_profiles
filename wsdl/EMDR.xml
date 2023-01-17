@@ -1,0 +1,1806 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                	xmlns:tns="http://egisz.rosminzdrav.ru/iehr/emdr/service/"
+                	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+                	xmlns:egisz="http://egisz.rosminzdrav.ru"
+                	name="emdr"
+                	targetNamespace="http://egisz.rosminzdrav.ru/iehr/emdr/service/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         			xmlns:tns="http://egisz.rosminzdrav.ru/iehr/emdr/service/"
+         			xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+         			elementFormDefault="qualified"
+         			jaxb:version="2.1"
+         			targetNamespace="http://egisz.rosminzdrav.ru/iehr/emdr/service/">
+			<xs:annotation>
+				<xs:appinfo>
+					<jaxb:schemaBindings>
+						<jaxb:package>
+							<jaxb:javadoc>Модель веб-службы, версия 3.0.</jaxb:javadoc>
+						</jaxb:package>
+					</jaxb:schemaBindings>
+				</xs:appinfo>
+			</xs:annotation>
+			<xs:element name="registerDocumentRequest"
+          				type="tns:registerDocumentRequest"/>
+			<xs:element name="demandContentRequest"
+          				type="tns:demandContentRequest"/>
+			<xs:element name="acknowledgment"
+          				type="tns:acknowledgment"/>
+			<xs:element name="searchRegistryItemRequest"
+          				type="tns:searchRegistryItemRequest"/>
+			<xs:element name="searchRegistryItemResponse"
+          				type="tns:searchRegistryItemResponse"/>
+			<xs:element name="getRegistryItemRequest"
+          				type="tns:getRegistryItemRequest"/>
+			<xs:element name="getRegistryItemResponse"
+          				type="tns:getRegistryItemResponse"/>
+			<xs:element name="getMetadataRequest"
+          				type="tns:getMetadataRequest"/>
+			<xs:element name="getMetadataResponse"
+          				type="tns:getMetadataResponse"/>
+			<xs:element name="getSignatureRequest"
+          				type="tns:getSignatureRequest"/>
+			<xs:element name="getSignatureResponse"
+          				type="tns:getSignatureResponse"/>
+			<xs:element name="emdrTransportHeader"
+          				type="tns:emdrTransportHeader"/>
+			<xs:complexType name="emdrTransportHeader">
+				<xs:annotation>
+					<xs:documentation>Транспортный заголовок</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="0"
+          						name="medOrgOid"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>OID Медицинской организации</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="trialMode"
+          						type="tns:trialMode">
+						<xs:annotation>
+							<xs:documentation>Опции режима отладки. Указание элемента допустимо только для тестовых площадок </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="registerDocumentRequest">
+				<xs:annotation>
+					<xs:documentation>Регистрация сведений об ЭМД. Запрос на регистрацию</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="messageId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Идентификатор запроса. Будет передан в запросе к callback-сервису МИС </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="localUid"
+          						type="tns:uuid">
+						<xs:annotation>
+							<xs:documentation>Уникальный идентификатор документа в виде GUID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kind"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Вид документа, по которому передаются сведения. Задается OID согласно настроенным в реестре видам документа </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="system"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Уникальный идентификатор РМИС</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="organization"
+          						type="tns:notEmptyStringFiftySymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Медицинская организация, передающая сведения о документе. Задается OID организации </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="department"
+          						type="tns:department">
+						<xs:annotation>
+							<xs:documentation>Подразделение, которое передает сведения о документе. Может передаваться при регистрации сведений от подразделения медицинской организации. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="documentNumber"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Регистрационный номер документа внутри организации или подразделения. В версии 4.0 тип элемента становится составным: серия и номер документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="creationDate"
+          							type="xs:date">
+							<xs:annotation>
+								<xs:documentation>Дата регистрации документа внутри организации или ее подразделения </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="creationDateTime"
+          							type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Дата регистрации документа внутри организации или ее подразделения </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+					<xs:element minOccurs="0"
+          						name="patient"
+          						type="tns:patient">
+						<xs:annotation>
+							<xs:documentation>Пациент, который указан в ЭМД. Необходимость указания задается в свойствах вида документа. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="assistance"
+          						type="tns:assistance">
+						<xs:annotation>
+							<xs:documentation>Дополнительные сведения об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="docContent"
+          						type="tns:binaryData">
+						<xs:annotation>
+							<xs:documentation>Документ</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="orgSignature"
+          						type="tns:binaryData">
+						<xs:annotation>
+							<xs:documentation>Файл подписи МО</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="recipient"
+          						type="tns:documentRecipient">
+						<xs:annotation>
+							<xs:documentation>Сведения о выдаче ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description"
+          						type="tns:notEmptyStringOneThousandSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Краткое произвольное описание документа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="unbounded"
+          						minOccurs="0"
+          						name="personalSignature"
+          						type="tns:personalSignature">
+						<xs:annotation>
+							<xs:documentation>Сведения об ЭЦП и о сотрудниках организации, подписавших документ </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="pluggableAttributes"
+          						type="xs:base64Binary">
+						<xs:annotation>
+							<xs:documentation>Дополнительные параметры документа (XML в base64; XSD-схема XML региструется для данного Вида документа) </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="unbounded"
+          						minOccurs="0"
+          						name="associations"
+          						type="tns:association">
+						<xs:annotation>
+							<xs:documentation>Документы, связанные с регистрируемым</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="replace"
+          						type="tns:documentIdentifier">
+						<xs:annotation>
+							<xs:documentation>Атрибуты (актуальной версии) документа, который следует заменить </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="association">
+				<xs:annotation>
+					<xs:documentation>Связь документов: ссылка на документ и тип связи</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="target"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Номер связанной записи реестра</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="type"
+          						type="tns:associationType">
+						<xs:annotation>
+							<xs:documentation>Тип связи</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="registerDocumentResult">
+				<xs:annotation>
+					<xs:documentation>Регистрация сведений об ЭМД. Ответ реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="registryItem"
+          							type="tns:registryItem">
+							<xs:annotation>
+								<xs:documentation>Запись реестра</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="errors"
+          							type="tns:errors">
+							<xs:annotation>
+								<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="demandContentRequest">
+				<xs:annotation>
+					<xs:documentation>Запрос файла ЭМД из хранилища другой системы. Запрос</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="messageId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Идентификатор запроса. Будет передан в запросе к callback-сервису МИС </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Идентификатор документа в реестре</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="grantingEmdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Документ, который является основанием для выдачи запрашиваемого. Указывается номер в реестре </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="acknowledgment">
+				<xs:annotation>
+					<xs:documentation>Подтверждение обработки операции</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="id"
+          							type="tns:notEmptyString">
+							<xs:annotation>
+								<xs:documentation>Идентификатор запроса. Будет передан в запросе к callback-сервису МИС </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element minOccurs="0"
+          							name="errors"
+          							type="tns:errors">
+							<xs:annotation>
+								<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="searchRegistryItemRequest">
+				<xs:annotation>
+					<xs:documentation>Поиск записей в реестре. Запрос</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="0"
+          						name="organization"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Медицинская организация, передавшая сведения о документе. Задается OID организации </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="localUid"
+          						type="tns:uuid">
+						<xs:annotation>
+							<xs:documentation>Уникальный идентификатор документа в МИС</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="kind"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Вид документа. Задается OID согласно настроенным в реестре видам документа </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="documentNumber"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Регистрационный номер документа внутри организации или подразделения. В версии 4.0 тип элемента становится составным: серия и номер документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="creationDate"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>НЕИСПОЛЬЗУЕМЫЙ ЭЛЕМЕНТ. Для поиска до дате создания используйте элементы creationDateTimeBegin и creationDateTimeEnd. Дата регистрации документа внутри организации или ее подразделения.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="creationDateBegin"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата и время начала периода создания документа. В версии 4.0 поле переименовано в creationDateTimeBegin.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="creationDateEnd"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата и время окончания периода создания документа. В версии 4.0 поле переименовано в creationDateTimeEnd.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="registerDateBegin"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата и время начала периода регистрации документа. В версии 4.0 поле переименовано в registrationDateTimeBegin.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="registerDateEnd"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата и время окончания периода регистрации документа. В версии 4.0 поле переименовано в registrationDateTimeEnd.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patientId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Пациент, который указан в ЭМД. Передается идентификатор пациента в МИС </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patientSnils"
+          						type="tns:snils">
+						<xs:annotation>
+							<xs:documentation>Пациент, который указан в ЭМД. Передается СНИЛС пациента</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="page"
+          						type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Номер запрашиваемой страницы результатов, нумерация с нуля</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="searchRegistryItemResponse">
+				<xs:annotation>
+					<xs:documentation>Поиск записей в реестре. Ответ реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="matches"
+          							type="tns:searchMatches">
+							<xs:annotation>
+								<xs:documentation>Результаты поиска</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="errors"
+          							type="tns:errors">
+							<xs:annotation>
+								<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="searchMatches">
+				<xs:annotation>
+					<xs:documentation>Результаты поиска</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded"
+          						minOccurs="0"
+          						name="item"
+          						type="tns:searchMatch">
+						<xs:annotation>
+							<xs:documentation>Записи реестра, соответствующие критериям поиска</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="page"
+          						type="tns:matchesPage">
+						<xs:annotation>
+							<xs:documentation>Атрибуты постраничной выдачи результов</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="matchesPage">
+				<xs:annotation>
+					<xs:documentation>Атрибуты постраничной выдачи результов</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="itemsPerPage"
+          						type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Размер страницы (представляет максимально возможное, а не актуальное число записей на странице) </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="hasNext"
+          						type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Есть ли еще страницы</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="searchMatch">
+				<xs:annotation>
+					<xs:documentation>Запись реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Уникальный номер, присвоенный сведениям об ЭМД в реестре</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="documentVersion"
+          						type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Номер актуальной версии документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="localUid"
+          						type="tns:uuid">
+						<xs:annotation>
+							<xs:documentation>Уникальный идентификатор документа в МИС</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDate"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDateTime"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="storeTillDate"
+          						nillable="true"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Срок хранения сведений, установленный в соответствии с настройками хранения для данного вида ЭМД. Пустое значение означает регистрацию ЭМД без ограничения срока хранения сведений. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getRegistryItemRequest">
+				<xs:annotation>
+					<xs:documentation>Запрос регистрационных сведений об ЭМД. Запрос</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getRegistryItemResponse">
+				<xs:annotation>
+					<xs:documentation>Запрос регистрационных сведений об ЭМД. Ответ реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="registryItem"
+          							type="tns:registryItem">
+							<xs:annotation>
+								<xs:documentation>Запись реестра</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="errors"
+          							type="tns:errors">
+							<xs:annotation>
+								<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getMetadataRequest">
+				<xs:annotation>
+					<xs:documentation>Запрос метаописания ЭМД. Запрос</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString"/>
+					<xs:element minOccurs="0"
+          						name="grantingEmdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Документ, который является основанием для выдачи запрашиваемого. Указывается номер в реестре </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getMetadataResponse">
+				<xs:annotation>
+					<xs:documentation>Запрос метаописания ЭМД. Ответ реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="metadata"
+          							type="tns:metadata">
+							<xs:annotation>
+								<xs:documentation>Метаописание ЭМД</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="errors"
+          							type="tns:errors">
+							<xs:annotation>
+								<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getSignatureRequest">
+				<xs:annotation>
+					<xs:documentation>Запрос электронных подписей ЭМД. Запрос</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString"/>
+					<xs:element minOccurs="0"
+          						name="grantingEmdrId"
+          						type="tns:notEmptyString"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getSignatureResponse">
+				<xs:annotation>
+					<xs:documentation>Запрос электронных подписей ЭМД. Ответ реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="status"
+          						type="tns:responseStatus">
+						<xs:annotation>
+							<xs:documentation>Статус ответа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Идентификатор документа в реестре</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="orgSignature"
+          						type="tns:binaryData">
+						<xs:annotation>
+							<xs:documentation>Файл подписи МО</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="unbounded"
+          						minOccurs="0"
+          						name="personalSignature"
+          						type="tns:binaryData">
+						<xs:annotation>
+							<xs:documentation>Файл подписи ЭЦП сотрудника МО, подписавшего документ</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="errors"
+          						type="tns:errors">
+						<xs:annotation>
+							<xs:documentation>Ошибки в случае статуса ответа "error"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="registryItem">
+				<xs:annotation>
+					<xs:documentation>Атрибуты информации, передаваемой из реестра</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="emdrId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Уникальный номер, присвоенный сведениям об ЭМД в реестре</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="documentVersion"
+          						type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Номер актуальной версии документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDate"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDateTime"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="storeTillDate"
+          						nillable="true"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Срок хранения сведений, установленный в соответствии с настройками хранения для данного вида ЭМД. Пустое значение означает регистрацию ЭМД без ограничения срока хранения сведений. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="registrationWarnings"
+          						type="tns:registrationWarnings">
+						<xs:annotation>
+							<xs:documentation>Список замечаний, выявленных на этапе проверки сведений об ЭМД при регистрации </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="personalSignature">
+				<xs:annotation>
+					<xs:documentation>ЭЦП и сведения о владельце</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="signer"
+          						type="tns:signer">
+						<xs:annotation>
+							<xs:documentation>Сведения о владельце подписи</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="signature"
+          						type="tns:binaryData">
+						<xs:annotation>
+							<xs:documentation>Файл подписи</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="description"
+          						type="tns:notEmptyStringOneThousandSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Краткое произвольное описание подписи</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="signer">
+				<xs:annotation>
+					<xs:documentation>Сведения о владельце подписи</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="0"
+          						name="localId"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Идентификатор сотрудника в МИС. Заполняется МО при наличии и необходимости указания такого идентификатора </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="role"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Роль сотрудника МО при подписи документа. Один документ может быть подписан несколькими сотрудниками МО, каждый из которых подписывает документ в рамках одной из ролей. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="surname"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Фамилия сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Имя сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patrName"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Отчество сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="birthDate"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Дата рождения сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="snils"
+          						type="tns:snils">
+						<xs:annotation>
+							<xs:documentation>СНИЛС сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="position"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Должность (OID), согласно которой сотрудник производит подпись документа. Указывается значение по классификатору должностей. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="organization"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>OID МО, в которой сотрудник занимает должность, указанную в position. Возможность указать значение отличное от registerDocumentRequest.organization запрашивается в заявке на подключение к РЭМД </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="speciality"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Специальность (OID), согласно которой сотрудник производит подпись документа. Указывается значение по классификатору специальностей. Необходимость указания задается в настройках вида документа </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="email"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Адрес электронной почты сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="phone"
+          						type="tns:phoneNumber">
+						<xs:annotation>
+							<xs:documentation>Телефон сотрудника</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="patient">
+				<xs:annotation>
+					<xs:documentation>Пациент, который указан в ЭМД</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="surname"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Фамилия</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Имя</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patrName"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Отчество</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="birthDate"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Дата рождения</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="gender"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Пол</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="localId"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Идентификатор пациента</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="snils"
+          						type="tns:snils">
+						<xs:annotation>
+							<xs:documentation>СНИЛС. Необходимость указания задается в свойствах вида документа. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="enp"
+          						type="tns:enp">
+						<xs:annotation>
+							<xs:documentation>ЕНП</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="otherId"
+          						type="tns:patientOtherId">
+						<xs:annotation>
+							<xs:documentation>Документ удостоверяющий личность</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="department">
+				<xs:annotation>
+					<xs:documentation>Подразделение</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="localId"
+          						type="tns:notEmptyStringFiftySymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Идентификатор в МИС</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Наименование</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="assistance">
+				<xs:annotation>
+					<xs:documentation>Дополнительные сведения об ЭМД</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="0"
+          						name="renderedServices"
+          						type="tns:renderedServices">
+						<xs:annotation>
+							<xs:documentation>Оказанные услуги</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="binaryData">
+				<xs:annotation>
+					<xs:documentation>Двоичные данные + контрольная сумма</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="data"
+          						type="xs:base64Binary">
+						<xs:annotation>
+							<xs:documentation>Данные</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="checksum"
+          						type="xs:long">
+						<xs:annotation>
+							<xs:documentation>Контрольная сумма файла, вычисленная по алгоритму CRC32</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="documentRecipient">
+				<xs:annotation>
+					<xs:documentation>Сведения о выдаче ЭМД из МО. Заполняется только для документов, которые предполагают их передачу в адрес пациента или других организаций </xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="kind"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Тип адресата</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:annotation>
+							<xs:documentation>Адресат</xs:documentation>
+						</xs:annotation>
+						<xs:element name="recipientKindPerson"
+          							type="tns:recipientKindPerson"/>
+						<xs:element name="recipientKindMedicalOrganization"
+          							type="tns:recipientKindMedicalOrganization"/>
+						<xs:element name="recipientKindOrganization"
+          							type="tns:recipientKindOrganization"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="recipientKindPerson">
+				<xs:annotation>
+					<xs:documentation>Адресат - физ. лицо</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="snils"
+          						type="tns:snils">
+						<xs:annotation>
+							<xs:documentation>СНИЛС</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="recipientKindMedicalOrganization">
+				<xs:annotation>
+					<xs:documentation>Адресат - медицинская организация</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="organization"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>OID в реестре медицинских организаций</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="recipientKindOrganization">
+				<xs:annotation>
+					<xs:documentation>Адресат - организация</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="ogrn"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>ОГРН</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kpp"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>КПП</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="errors">
+				<xs:annotation>
+					<xs:documentation>Ошибки обработки запроса</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded"
+          						name="item"
+          						type="tns:error">
+						<xs:annotation>
+							<xs:documentation>Ошибка обработки запроса</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="error">
+				<xs:annotation>
+					<xs:documentation>Ошибка обработки запроса</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="code"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Код</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="message"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Детализация</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="registrationWarning">
+				<xs:annotation>
+					<xs:documentation>Замечание</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="code"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Код</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="message"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Детализация</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="registrationWarnings">
+				<xs:annotation>
+					<xs:documentation>Список замечаний, выявленных на этапе проверки сведений об ЭМД при регистрации </xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded"
+          						name="item"
+          						type="tns:registrationWarning">
+						<xs:annotation>
+							<xs:documentation>Замечание</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="associationType">
+				<xs:annotation>
+					<xs:documentation>Тип связи документов</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="RELATES_TO">
+						<xs:annotation>
+							<xs:documentation>документы одноранговые</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="INCLUDED_IN">
+						<xs:annotation>
+							<xs:documentation>регистрируемый документ входит в связанный</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="INCLUDES">
+						<xs:annotation>
+							<xs:documentation>регистрируемый документ включает в себя связанный</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:complexType name="metadata">
+				<xs:annotation>
+					<xs:documentation>Метаописание ЭМД</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="0"
+          						name="documentVersion"
+          						type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Номер актуальной версии документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kind"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Вид документа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="systemName"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Наименование РМИС, зарегистрировавшей ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="region"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Код региона организации, зарегистрировавшей ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="organization"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>OID организации, зарегистрировавшей ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="department"
+          						type="tns:department">
+						<xs:annotation>
+							<xs:documentation>Подразделение, которое зарегистрировало ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="documentNumber"
+          						type="tns:notEmptyStringOneHundredSymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Регистрационный номер документа внутри организации или подразделения. В версии 4.0 тип элемента становится составным: серия и номер документа.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="creationDate"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Дата регистрации документа внутри организации или ее подразделения </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="creationDateTime"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата регистрации документа внутри организации или ее подразделения </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="storeTillDate"
+          						nillable="true"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Срок хранения сведений, установленный в соответствии с настройками хранения для данного вида ЭМД. Пустое значение означает регистрацию ЭМД без ограничения срока хранения сведений. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDate"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="registrationDateTime"
+          						type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Дата создания записи в реестре.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patientSnils"
+          						type="tns:snils">
+						<xs:annotation>
+							<xs:documentation>СНИЛС пациента</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="patientLocalId"
+          						type="tns:notEmptyStringFiftySymbolsLength">
+						<xs:annotation>
+							<xs:documentation>Идентификатор пациента</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="assistance"
+          						type="tns:assistance">
+						<xs:annotation>
+							<xs:documentation>Дополнительные сведения об ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Описание документа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="unbounded"
+          						name="signer"
+          						type="tns:signer">
+						<xs:annotation>
+							<xs:documentation>Сведения о владельце подписи</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="contentType"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Формат файла ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="pluggableAttributes"
+          						type="xs:base64Binary">
+						<xs:annotation>
+							<xs:documentation>Дополнительные параметры документа (XML в base64; XSD-схема XML региструется для данного Вида документа) </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="unbounded"
+          						minOccurs="0"
+          						name="associations"
+          						type="tns:association">
+						<xs:annotation>
+							<xs:documentation>Документы, связанные с регистрируемым</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="recipient"
+          						type="tns:documentRecipient">
+						<xs:annotation>
+							<xs:documentation>Сведения о выдаче ЭМД</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="documentIdentifier">
+				<xs:annotation>
+					<xs:documentation>Идентификатор (актуальной версии) документа, который следует заменить </xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="root"
+          						type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Реестровый номер</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0"
+          						name="version"
+          						type="tns:documentVersionNumber">
+						<xs:annotation>
+							<xs:documentation>Номер актуальной версии. Отсутствие элемента означает ссылку на версию 1. Явное указание версии 1 недопустимо </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="renderedServices">
+				<xs:annotation>
+					<xs:documentation>Оказанные услуги</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded"
+          						name="renderedService"
+          						type="tns:renderedService"> </xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="renderedService">
+				<xs:annotation>
+					<xs:documentation>Оказанная услуга</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="code"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Код по справочнику 1.2.643.5.1.13.13.11.1070</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="renderedDate"
+          						type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Дата оказания</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="patientOtherId">
+				<xs:annotation>
+					<xs:documentation>документ удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="type"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Вид ДУЛ по справочнику 1.2.643.5.1.13.2.1.1.498</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="number"
+          						type="tns:notEmptyString">
+						<xs:annotation>
+							<xs:documentation>Номер документа</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="trialMode">
+				<xs:annotation>
+					<xs:documentation>Опции отладки</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded"
+          						name="option"
+          						type="tns:trialOption"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="trialOption">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="skip_end_entity_certificate_validation">
+						<xs:annotation>
+							<xs:documentation>Пропустить валидацию сертификатов подписантов</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="uuid">
+				<xs:restriction base="xs:string">
+					<xs:length value="36"/>
+					<xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="snils">
+				<xs:restriction base="xs:string">
+					<xs:length value="11"/>
+					<xs:pattern value="[0-9]+"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="enp">
+				<xs:restriction base="xs:string">
+					<xs:length value="16"/>
+					<xs:pattern value="[0-9]+"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="phoneNumber">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+					<xs:pattern value="[0-9]+"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="responseStatus">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="success"/>
+					<xs:enumeration value="error"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyString">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyStringFiftySymbolsLength">
+				<xs:restriction base="tns:notEmptyString">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyStringFifteenSymbolsLength">
+				<xs:restriction base="tns:notEmptyString">
+					<xs:maxLength value="15"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyStringThirtySixSymbolsLength">
+				<xs:restriction base="tns:notEmptyString">
+					<xs:maxLength value="36"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyStringOneHundredSymbolsLength">
+				<xs:restriction base="tns:notEmptyString">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="notEmptyStringOneThousandSymbolsLength">
+				<xs:restriction base="tns:notEmptyString">
+					<xs:maxLength value="1000"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="documentVersionNumber">
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          			xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+          			xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+          			attributeFormDefault="unqualified"
+          			elementFormDefault="qualified"
+          			targetNamespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+          			version="0.1">
+			<!--  // Fault Codes ///////////////////////////////////////////  -->
+			<xsd:simpleType name="tTimestampFault">
+				<xsd:annotation>
+					<xsd:documentation> This type defines the fault code value for Timestamp message expiration. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:QName">
+					<xsd:enumeration value="wsu:MessageExpired"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<!--  // Global attributes ////////////////////////////////////  -->
+			<xsd:attribute name="Id"
+             				type="xsd:ID">
+				<xsd:annotation>
+					<xsd:documentation> This global attribute supports annotating arbitrary elements with an ID. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attributeGroup name="commonAtts">
+				<xsd:annotation>
+					<xsd:documentation> Convenience attribute group used to simplify this schema. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:attribute ref="wsu:Id"
+             					use="optional"/>
+				<xsd:anyAttribute namespace="##other"
+                					processContents="lax"/>
+			</xsd:attributeGroup>
+			<!--  // Utility types ////////////////////////////////////////  -->
+			<xsd:complexType name="AttributedDateTime">
+				<xsd:annotation>
+					<xsd:documentation> This type is for elements whose [children] is a psuedo-dateTime and can have arbitrary attributes. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attributeGroup ref="wsu:commonAtts"/>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="AttributedURI">
+				<xsd:annotation>
+					<xsd:documentation> This type is for elements whose [children] is an anyURI and can have arbitrary attributes. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:anyURI">
+						<xsd:attributeGroup ref="wsu:commonAtts"/>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<!--  // Timestamp header components ///////////////////////////  -->
+			<xsd:complexType name="TimestampType">
+				<xsd:annotation>
+					<xsd:documentation> This complex type ties together the timestamp related elements into a composite type. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element minOccurs="0"
+           						ref="wsu:Created"/>
+					<xsd:element minOccurs="0"
+           						ref="wsu:Expires"/>
+					<xsd:choice maxOccurs="unbounded"
+          						minOccurs="0">
+						<xsd:any namespace="##other"
+       							processContents="lax"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attributeGroup ref="wsu:commonAtts"/>
+			</xsd:complexType>
+			<xsd:element name="Timestamp"
+           				type="wsu:TimestampType">
+				<xsd:annotation>
+					<xsd:documentation> This element allows Timestamps to be applied anywhere element wildcards are present, including as a SOAP header. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--  global element decls to allow individual elements to appear anywhere  -->
+			<xsd:element name="Expires"
+           				type="wsu:AttributedDateTime">
+				<xsd:annotation>
+					<xsd:documentation> This element allows an expiration time to be applied anywhere element wildcards are present. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Created"
+           				type="wsu:AttributedDateTime">
+				<xsd:annotation>
+					<xsd:documentation> This element allows a creation time to be applied anywhere element wildcards are present. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:schema>
+		<schema xmlns:tns="http://egisz.rosminzdrav.ru"
+      			xmlns="http://www.w3.org/2001/XMLSchema"
+      			attributeFormDefault="unqualified"
+      			elementFormDefault="qualified"
+      			targetNamespace="http://egisz.rosminzdrav.ru">
+			<import namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
+			<element name="transportHeader">
+				<complexType>
+					<annotation>
+						<documentation>Транспортный заголовок: - аутентификационная информация - пользовательская информация </documentation>
+					</annotation>
+					<sequence>
+						<element name="authInfo"
+       							type="tns:authInfo"/>
+						<element minOccurs="0"
+       							name="userInfo"
+       							type="tns:userInfo"/>
+					</sequence>
+					<attribute xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+         						ref="wsu:Id"/>
+				</complexType>
+			</element>
+			<complexType name="userInfo">
+				<annotation>
+					<documentation>Транспортный заголовок - пользователь: - идентификатор - СНИЛС - фамилия - имя - отчество - глобальная роль ЕСИАиА (код, имя) - медицинская организация - регион (код, имя) - образования медработника </documentation>
+				</annotation>
+				<sequence>
+					<element name="userId"
+       						type="tns:snils"/>
+					<element name="lastName"
+       						type="tns:string200"/>
+					<element name="firstName"
+       						type="tns:string200"/>
+					<element name="middleName"
+       						type="tns:string200"/>
+					<element name="role"
+       						type="tns:property"/>
+					<element maxOccurs="unbounded"
+       						minOccurs="0"
+       						name="medOrg"
+       						type="tns:organization"/>
+					<element minOccurs="0"
+       						name="region"
+       						type="tns:property"/>
+					<element maxOccurs="unbounded"
+       						minOccurs="0"
+       						name="education"
+       						type="tns:education"/>
+				</sequence>
+			</complexType>
+			<complexType name="authInfo">
+				<annotation>
+					<documentation>Транспортный заголовок - аутентификация: - пользовательская сессия - идентификатор вызывающей системы </documentation>
+				</annotation>
+				<sequence>
+					<element minOccurs="0"
+       						name="userSession"
+       						type="string"/>
+					<element name="clientEntityId"
+       						type="string"/>
+				</sequence>
+			</complexType>
+			<complexType name="organization">
+				<annotation>
+					<documentation>Медицинская организация - идентификатор (OID, имя) - тип (код, имя) - тип должности сотрудника (основная/совмещение) (код, имя) - должность сотрудника (код, имя) </documentation>
+				</annotation>
+				<sequence>
+					<element name="id"
+       						type="tns:property"/>
+					<element name="type"
+       						type="tns:property"/>
+					<element minOccurs="0"
+       						name="positionType"
+       						type="tns:property"/>
+					<element minOccurs="0"
+       						name="position"
+       						type="tns:property"/>
+				</sequence>
+			</complexType>
+			<complexType name="education">
+				<annotation>
+					<documentation>Образование: - тип образования (диплом/сертификат) (код, имя) - специальность (код, имя) - тип образования по диплому (высшее/среднее) (код, имя) </documentation>
+				</annotation>
+				<sequence>
+					<element name="type"
+       						type="tns:property"/>
+					<element name="speciality"
+       						type="tns:property"/>
+					<element minOccurs="0"
+       						name="diplomType"
+       						type="tns:property"/>
+				</sequence>
+			</complexType>
+			<complexType name="property">
+				<annotation>
+					<documentation>Свойство: код, имя</documentation>
+				</annotation>
+				<sequence>
+					<element name="code"
+       						type="string"/>
+					<element name="name"
+       						type="string"/>
+				</sequence>
+			</complexType>
+			<simpleType name="snils">
+				<restriction base="string">
+					<pattern value="\d{11}"/>
+				</restriction>
+			</simpleType>
+			<simpleType name="string200">
+				<restriction base="string">
+					<maxLength value="200"/>
+				</restriction>
+			</simpleType>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="searchRegistryItemRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:searchRegistryItemRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRegistryItemRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:getRegistryItemRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="demandContentRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:demandContentRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getSignatureRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:getSignatureRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="registerDocumentRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:registerDocumentRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="acknowledgment">
+		<wsdl:part element="tns:acknowledgment"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRegistryItemResponse">
+		<wsdl:part element="tns:getRegistryItemResponse"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getMetadataRequest">
+		<wsdl:part element="egisz:transportHeader"
+         			name="header"> </wsdl:part>
+		<wsdl:part element="tns:emdrTransportHeader"
+         			name="emdrTransportHeader"> </wsdl:part>
+		<wsdl:part element="tns:getMetadataRequest"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getSignatureResponse">
+		<wsdl:part element="tns:getSignatureResponse"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="searchRegistryItemResponse">
+		<wsdl:part element="tns:searchRegistryItemResponse"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getMetadataResponse">
+		<wsdl:part element="tns:getMetadataResponse"
+         			name="body"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="emdr">
+		<wsdl:operation name="registerDocument">
+			<wsdl:documentation>Регистрация сведений об ЭМД</wsdl:documentation>
+			<wsdl:input message="tns:registerDocumentRequest"
+          				name="registerDocumentRequest"> </wsdl:input>
+			<wsdl:output message="tns:acknowledgment"
+           				name="registerDocumentAcknowledgment"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="demandContent">
+			<wsdl:documentation>Запрос файла ЭМД</wsdl:documentation>
+			<wsdl:input message="tns:demandContentRequest"
+          				name="demandContentRequest"> </wsdl:input>
+			<wsdl:output message="tns:acknowledgment"
+           				name="demandContentAcknowledgment"> </wsdl:output>
+			<soap:operation soapAction="demandContent"
+              				style="document"/>
+		</wsdl:operation>
+		<wsdl:operation name="searchRegistryItem">
+			<wsdl:documentation>Поиск записей в реестре</wsdl:documentation>
+			<wsdl:input message="tns:searchRegistryItemRequest"
+          				name="searchRegistryItemRequest"> </wsdl:input>
+			<wsdl:output message="tns:searchRegistryItemResponse"
+           				name="searchRegistryItemResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRegistryItem">
+			<wsdl:documentation>Запрос регистрационных сведений об ЭМД</wsdl:documentation>
+			<wsdl:input message="tns:getRegistryItemRequest"
+          				name="getRegistryItemRequest"> </wsdl:input>
+			<wsdl:output message="tns:getRegistryItemResponse"
+           				name="getRegistryItemResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getMetadata">
+			<wsdl:documentation>Запрос метаописания ЭМД</wsdl:documentation>
+			<wsdl:input message="tns:getMetadataRequest"
+          				name="getMetadataRequest"> </wsdl:input>
+			<wsdl:output message="tns:getMetadataResponse"
+           				name="getMetadataResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSignature">
+			<wsdl:documentation>Запрос электронных подписей ЭМД</wsdl:documentation>
+			<wsdl:input message="tns:getSignatureRequest"
+          				name="getSignatureRequest"> </wsdl:input>
+			<wsdl:output message="tns:getSignatureResponse"
+           				name="getSignatureResponse"> </wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="emdrSoapBinding"
+            		type="tns:emdr">
+		<soap:binding style="document"
+            			transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="registerDocument">
+			<soap:operation soapAction="registerDocument"
+              				style="document"/>
+			<wsdl:input name="registerDocumentRequest">
+				<soap:header message="tns:registerDocumentRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:registerDocumentRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="registerDocumentAcknowledgment">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="demandContent">
+			<soap:operation soapAction="demandContent"
+              				style="document"/>
+			<wsdl:input name="demandContentRequest">
+				<soap:header message="tns:demandContentRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:demandContentRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="demandContentAcknowledgment">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="searchRegistryItem">
+			<soap:operation soapAction="searchRegistryItem"
+              				style="document"/>
+			<wsdl:input name="searchRegistryItemRequest">
+				<soap:header message="tns:searchRegistryItemRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:searchRegistryItemRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="searchRegistryItemResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRegistryItem">
+			<soap:operation soapAction="getRegistryItem"
+              				style="document"/>
+			<wsdl:input name="getRegistryItemRequest">
+				<soap:header message="tns:getRegistryItemRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:getRegistryItemRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getRegistryItemResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getMetadata">
+			<soap:operation soapAction="getMetadata"
+              				style="document"/>
+			<wsdl:input name="getMetadataRequest">
+				<soap:header message="tns:getMetadataRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:getMetadataRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getMetadataResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSignature">
+			<soap:operation soapAction="getSignature"
+              				style="document"/>
+			<wsdl:input name="getSignatureRequest">
+				<soap:header message="tns:getSignatureRequest"
+           					part="header"
+           					use="literal"> </soap:header>
+				<soap:header message="tns:getSignatureRequest"
+           					part="emdrTransportHeader"
+           					use="literal"> </soap:header>
+				<soap:body parts="body"
+         					use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getSignatureResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="emdr">
+		<wsdl:port binding="tns:emdrSoapBinding"
+         			name="emdrPort">
+			<!--<soap:address location="http://ips-test.rosminzdrav.ru/598c424055f7d"/>-->
+			<soap:address location="http://1c-prod-rmis.miac.lan/rmis/hs/fws-proxy/EMDR" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

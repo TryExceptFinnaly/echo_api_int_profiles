@@ -24,6 +24,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/wsdl/EMDR')
+def emdr():
+    return send_from_directory(os.path.join(app.root_path, 'wsdl'), 'EMDR.xml')
+
+
 @app.route('/odii/', methods=('GET', 'POST'))
 def odii():
     if request.method == 'POST':
