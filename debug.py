@@ -13,13 +13,13 @@ import requests
 # }
 
 data = {
-    "study": 7000011,
+    "study": 7001894,
     "purpose": 104,
     "cito": False,
     "patient": {
         "fio": "Крошкина Марина Сергеевна",
         "birth": "1980-01-08",
-        "polis_number": "0102030405",
+        "polis_number": "897807890888999",
         "snils": "156-332-679 72"
     }
 }

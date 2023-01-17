@@ -1800,7 +1800,7 @@
 		<wsdl:port binding="tns:emdrSoapBinding"
          			name="emdrPort">
 			<!--<soap:address location="http://ips-test.rosminzdrav.ru/598c424055f7d"/>-->
-			<soap:address location="http://1c-prod-rmis.miac.lan/rmis/hs/fws-proxy/EMDR" />
+			<soap:address location="http://192.168.1.118/wsdl/EMDR" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

@@ -14,7 +14,7 @@ REQUESTS_FOLDER = 'requests'
 
 def print_requests_to_file(text, profile):
     filename = f"{REQUESTS_FOLDER}/{profile}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
-    print(text, file=open(filename, "w"))
+    print(text, file=open(filename, "w", encoding='utf-8'))
 
 
 # logging.basicConfig(format='%(levelname)s:%(message)s', filename='api.log', level=logging.DEBUG, encoding='utf-8')
@@ -24,9 +24,13 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/wsdl/EMDR')
+@app.route('/wsdl/EMDR', methods=('GET', 'POST'))
 def emdr():
-    return send_from_directory(os.path.join(app.root_path, 'wsdl'), 'EMDR.xml')
+    if request.method == 'POST':
+        print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.data.decode(encoding="utf-8")}', 'REMD')
+        return '', 201
+    else:
+        return send_from_directory(os.path.join(app.root_path, 'wsdl'), 'EMDR.xml'), 200
 
 
 @app.route('/odii/', methods=('GET', 'POST'))
