@@ -1,14 +1,9 @@
-import os
-import json
+from fastapi import FastAPI, File, Request
 
-from flask import Flask, send_from_directory, render_template, request
-from flask_restful import Api
 from datetime import datetime
+from fastapi.responses import JSONResponse, FileResponse
 
-app = Flask(__name__)
-app.logger.setLevel('INFO')
-api = Api(app)
-
+app = FastAPI()
 REQUESTS_FOLDER = 'requests'
 
 
@@ -17,46 +12,34 @@ def print_requests_to_file(text, profile):
     print(text, file=open(filename, "w", encoding='utf-8'))
 
 
-# logging.basicConfig(format='%(levelname)s:%(message)s', filename='api.log', level=logging.DEBUG, encoding='utf-8')
-
-@app.route('/')
+@app.get("/")
 def index():
-    return render_template('index.html')
+    return JSONResponse(content={"message": "Welcome to my API"}, status_code=200)
 
 
-@app.route('/wsdl/EMDR', methods=('GET', 'POST'))
-def emdr():
-    if request.method == 'POST':
-        print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.data.decode(encoding="utf-8")}', 'REMD')
-        return '', 201
-    else:
-        return send_from_directory(os.path.join(app.root_path, 'wsdl'), 'EMDR.xml'), 200
+@app.post("/wsdl/EMDR")
+def emdr_post(request: Request):
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.body}', 'REMD')
+    return JSONResponse(content={"message": "EMDR request received"}, status_code=201)
 
 
-@app.route('/odii/', methods=('GET', 'POST'))
-def odii():
-    if request.method == 'POST':
-        print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{json.loads(request.data)}', 'ODII')
-        return '', 201
-    else:
-        return render_template('index.html')
+@app.get("/wsdl/EMDR")
+def emdr_get():
+    return FileResponse(path='wsdl/EMDR.xml', media_type='application/xml')
 
 
-@app.route('/conclusion/full', methods=('GET', 'POST'))
-def eris():
-    if request.method == 'POST':
-        print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{json.loads(request.data)}', 'ERIS')
-        return '', 201
-    else:
-        return render_template('index.html')
+@app.post("/odii")
+def odii(request: Request):
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.body}', 'ODII')
+    return JSONResponse(content={"message": "ODII request received"}, status_code=201)
 
 
-@app.route('/favicon.ico')
+@app.post("/conclusion/full")
+def eris(request: Request):
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.body}', 'ERIS')
+    return JSONResponse(content={"message": "ERIS request received"}, status_code=201)
+
+
+@app.get("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico',
-                               mimetype='image/vnd.microsoft.icon')
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
-    # ssl_context=('certificate/cert.pem', 'certificate/key.pem'))
+    return File('static/favicon.ico', media_type='image/vnd.microsoft.icon')
