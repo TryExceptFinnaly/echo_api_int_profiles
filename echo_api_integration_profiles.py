@@ -66,4 +66,4 @@ def list_logs():
 
 @app.get("/logs/{log_name}")
 def open_log(log_name: str):
-    return FileResponse(path=f'requests/{log_name}', media_type='text')
+    return FileResponse(path=f'requests/{log_name}')
