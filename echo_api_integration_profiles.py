@@ -22,7 +22,7 @@ def index():
 @app.post("/wsdl/EMDR", status_code=201)
 async def emdr_post(request: Request):
     request_body = await request.body()
-    request_body.decode('utf-8')
+    request_body = request_body.decode('utf-8')
     print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'REMD')
     return {"message": "EMDR request received"}
 
@@ -35,7 +35,7 @@ def emdr_get():
 @app.post("/odii", status_code=201)
 async def odii(request: Request):
     request_body = await request.body()
-    request_body.decode('utf-8')
+    request_body = request_body.decode('utf-8')
     print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'ODII')
     return {"message": "ODII request received"}
 
@@ -43,7 +43,7 @@ async def odii(request: Request):
 @app.post("/conclusion/full", status_code=201)
 async def eris(request: Request):
     request_body = await request.body()
-    request_body.decode('utf-8')
+    request_body = request_body.decode('utf-8')
     print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'ERIS')
     return {"message": "ERIS request received"}
 
