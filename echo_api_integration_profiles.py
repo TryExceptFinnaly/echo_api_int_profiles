@@ -19,7 +19,7 @@ def index():
 
 @app.post("/wsdl/EMDR")
 def emdr_post(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json}', 'REMD')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'REMD')
     return JSONResponse(content={"message": "EMDR request received"}, status_code=201)
 
 
@@ -30,13 +30,13 @@ def emdr_get():
 
 @app.post("/odii")
 def odii(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json}', 'ODII')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'ODII')
     return JSONResponse(content={"message": "ODII request received"}, status_code=201)
 
 
 @app.post("/conclusion/full")
 def eris(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json}', 'ERIS')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'ERIS')
     return JSONResponse(content={"message": "ERIS request received"}, status_code=201)
 
 
