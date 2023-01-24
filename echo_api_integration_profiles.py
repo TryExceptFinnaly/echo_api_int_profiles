@@ -24,7 +24,7 @@ def main():
 async def emdr_post(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
-    print_requests_to_file(f'{request.headers}\nBody Data:\n{request_body}', 'REMD')
+    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'REMD')
     return {"message": "EMDR request received"}
 
 
@@ -37,7 +37,7 @@ def emdr_get():
 async def odii(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
-    print_requests_to_file(f'{request.headers}\nBody Data:\n{request_body}', 'ODII')
+    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'ODII')
     return {"message": "ODII request received"}
 
 
@@ -45,7 +45,7 @@ async def odii(request: Request):
 async def eris(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
-    print_requests_to_file(f'{request.headers}\nBody Data:\n{request_body}', 'ERIS')
+    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'ERIS')
     return {"message": "ERIS request received"}
 
 
