@@ -1,5 +1,6 @@
-from fastapi import FastAPI, File, Request
+import os
 
+from fastapi import FastAPI, File, Request
 from datetime import datetime
 from fastapi.responses import FileResponse
 
@@ -15,8 +16,8 @@ def print_requests_to_file(text, profile):
 
 
 @app.get("/")
-def index():
-    return {"message": "Welcome to my API"}
+def main():
+    return {"message": "Welcome to my API server"}
 
 
 @app.post("/wsdl/EMDR", status_code=201)
@@ -51,3 +52,18 @@ async def eris(request: Request):
 @app.get("/favicon.ico")
 def favicon():
     return File('static/favicon.ico', media_type='image/vnd.microsoft.icon')
+
+
+@app.get("/logs/")
+def list_logs():
+    list_logs = []
+    with os.scandir(REQUESTS_FOLDER) as scandir:
+        for entry in scandir:
+            if entry.is_file(follow_symlinks=False):
+                list_logs.append(entry.name)
+    return list_logs
+
+
+@app.get("/logs/{log_name}")
+def open_log(log_name: str):
+    return FileResponse(path=f'requests/{log_name}', media_type='text')
