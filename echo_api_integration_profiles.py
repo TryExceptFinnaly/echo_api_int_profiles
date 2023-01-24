@@ -1,9 +1,11 @@
 from fastapi import FastAPI, File, Request
 
 from datetime import datetime
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import FileResponse
 
-app = FastAPI()
+app = FastAPI(
+    title='Echo API server for integration profiles'
+)
 REQUESTS_FOLDER = 'requests'
 
 
@@ -14,13 +16,15 @@ def print_requests_to_file(text, profile):
 
 @app.get("/")
 def index():
-    return JSONResponse(content={"message": "Welcome to my API"}, status_code=200)
+    return {"message": "Welcome to my API"}
 
 
-@app.post("/wsdl/EMDR")
-def emdr_post(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'REMD')
-    return JSONResponse(content={"message": "EMDR request received"}, status_code=201)
+@app.post("/wsdl/EMDR", status_code=201)
+async def emdr_post(request: Request):
+    request_body = await request.body()
+    request_body.decode('utf-8')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'REMD')
+    return {"message": "EMDR request received"}
 
 
 @app.get("/wsdl/EMDR")
@@ -28,16 +32,20 @@ def emdr_get():
     return FileResponse(path='wsdl/EMDR.xml', media_type='application/xml')
 
 
-@app.post("/odii")
-def odii(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'ODII')
-    return JSONResponse(content={"message": "ODII request received"}, status_code=201)
+@app.post("/odii", status_code=201)
+async def odii(request: Request):
+    request_body = await request.body()
+    request_body.decode('utf-8')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'ODII')
+    return {"message": "ODII request received"}
 
 
-@app.post("/conclusion/full")
-def eris(request: Request):
-    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request.json()}', 'ERIS')
-    return JSONResponse(content={"message": "ERIS request received"}, status_code=201)
+@app.post("/conclusion/full", status_code=201)
+async def eris(request: Request):
+    request_body = await request.body()
+    request_body.decode('utf-8')
+    print_requests_to_file(f'Headers:\n{request.headers}\nBody Data:\n{request_body}', 'ERIS')
+    return {"message": "ERIS request received"}
 
 
 @app.get("/favicon.ico")
