@@ -2,7 +2,7 @@ import os
 
 from fastapi import FastAPI, File, Request
 from datetime import datetime
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 app = FastAPI(
     title='Echo API server for integration profiles'
@@ -57,11 +57,16 @@ def favicon():
 @app.get("/logs/")
 def list_logs():
     list_logs = []
+    content = f""""""
     with os.scandir(REQUESTS_FOLDER) as scandir:
         for entry in scandir:
             if entry.is_file(follow_symlinks=False):
                 list_logs.append(entry.name)
-    return list_logs
+                content = f"""<form action="/logs/{entry.name}" method="get">
+                            <input type="submit" value={entry.name}>
+                            </form>""" + content
+    content = f"""<body>{content}</body>"""
+    return HTMLResponse(content=content)
 
 
 @app.get("/logs/{log_name}")
