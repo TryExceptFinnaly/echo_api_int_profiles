@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  uvicorn:
+    build: .
+    #command: uvicorn echo_api_integration.main:app --host 0.0.0.0
+    image: uvicorn:latest
+    volumes:
+      - ./requests:/build/app/requests
+    ports:
+      - 80:80
