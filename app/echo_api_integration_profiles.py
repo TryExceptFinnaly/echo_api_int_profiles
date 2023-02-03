@@ -62,13 +62,30 @@ def list_logs():
         for entry in scandir:
             if entry.is_file(follow_symlinks=False):
                 list_logs.append(entry.name)
-                content = f"""<form action="/logs/{entry.name}" method="get">
-                            <input type="submit" value={entry.name}>
+                content = f"""<form action="/logs/{entry.name}">
+                            <input type="submit" formmethod="get" value="{entry.name}">
+                            <input type="submit" formmethod="post" value="delete">
                             </form>""" + content
-    content = f"""<body>{content}</body>"""
+    css = 'input{' \
+          'width: 200px' \
+          '}' \
+          'input[value="delete"]{' \
+          'width: 50px' \
+          '}'
+    head = f"""<head><style type="text/css">{css}</style></head>"""
+    content = f"""{head}<body>{content}</body>"""
     return HTMLResponse(content=content)
 
 
 @app.get("/logs/{log_name}")
 def open_log(log_name: str):
     return FileResponse(path=f'requests/{log_name}')
+
+
+@app.post("/logs/{log_name}")
+def delete_log(log_name: str):
+    try:
+        os.remove(path=f'requests/{log_name}')
+        return {"message": f"Log {log_name} deleted successfully."}
+    except Exception as exc:
+        return {"message": f"Log {log_name} deletion error: {exc}."}
