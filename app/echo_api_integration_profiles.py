@@ -2,7 +2,8 @@ import os
 
 from fastapi import FastAPI, File, Request
 from datetime import datetime
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+import starlette.status as status
 
 app = FastAPI(
     title='Echo API server for integration profiles'
@@ -54,7 +55,7 @@ def favicon():
     return File('static/favicon.ico', media_type='image/vnd.microsoft.icon')
 
 
-@app.get("/logs/")
+@app.get("/logs")
 def list_logs():
     list_logs = []
     content = f""""""
@@ -86,6 +87,6 @@ def open_log(log_name: str):
 def delete_log(log_name: str):
     try:
         os.remove(path=f'requests/{log_name}')
-        return {"message": f"Log {log_name} deleted successfully."}
+        return RedirectResponse('/logs', status_code=status.HTTP_302_FOUND)
     except Exception as exc:
         return {"message": f"Log {log_name} deletion error: {exc}."}
