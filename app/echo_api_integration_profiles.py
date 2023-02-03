@@ -67,7 +67,7 @@ def list_logs():
                             <input type="submit" formmethod="post" value="delete">
                             </form>""" + content
     css = 'input{' \
-          'width: 200px' \
+          'width: 250px' \
           '}' \
           'input[value="delete"]{' \
           'width: 50px' \
