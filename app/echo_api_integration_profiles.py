@@ -12,7 +12,7 @@ REQUESTS_FOLDER = 'requests'
 
 
 def print_requests_to_file(text, profile):
-    filename = f"{REQUESTS_FOLDER}/{profile}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+    filename = f"{REQUESTS_FOLDER}/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{profile}.txt"
     print(text, file=open(filename, "w", encoding='utf-8'))
 
 
@@ -75,7 +75,7 @@ def list_logs():
                             <input type="submit" formmethod="post" value="delete">
                             </form>""" + content
     css = 'input{' \
-          'width: 250px' \
+          'width: 500px' \
           '}' \
           'input[value="delete"]{' \
           'width: 50px' \
