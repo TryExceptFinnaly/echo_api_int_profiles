@@ -65,15 +65,14 @@ def favicon():
 @app.get("/logs")
 def list_logs():
     list_logs = []
+
     content = f""""""
     with os.scandir(REQUESTS_FOLDER) as scandir:
         for entry in scandir:
             if entry.is_file(follow_symlinks=False):
                 list_logs.append(entry.name)
-                content = f"""<form action="/logs/{entry.name}">
-                            <input type="submit" formmethod="get" value="{entry.name}">
-                            <input type="submit" formmethod="post" value="delete">
-                            </form>""" + content
+    list_logs.sort()
+
     css = 'input{' \
           'width: 500px' \
           '}' \
@@ -81,6 +80,11 @@ def list_logs():
           'width: 50px' \
           '}'
     head = f"""<head><style type="text/css">{css}</style></head>"""
+    for log in list_logs:
+        content += f"""<form action="/logs/{log}">
+        <input type="submit" formmethod="get" value="{log}">
+        <input type="submit" formmethod="post" value="delete">
+        </form>"""
     content = f"""{head}<body>{content}</body>"""
     return HTMLResponse(content=content)
 
