@@ -71,7 +71,7 @@ def list_logs():
         for entry in scandir:
             if entry.is_file(follow_symlinks=False):
                 list_logs.append(entry.name)
-    list_logs.sort()
+    list_logs.sort(reverse=True)
 
     css = 'input{' \
           'width: 500px' \
