@@ -73,13 +73,7 @@ def list_logs():
                 list_logs.append(entry.name)
     list_logs.sort(reverse=True)
 
-    css = 'input{' \
-          'width: 500px' \
-          '}' \
-          'input[value="delete"]{' \
-          'width: 50px' \
-          '}'
-    head = f"""<head><style type="text/css">{css}</style></head>"""
+    head = f"""<head><link href="logs.css" rel="stylesheet"></head>"""
     for log in list_logs:
         content += f"""<form action="/logs/{log}">
         <input type="submit" formmethod="get" value="{log}">
@@ -87,6 +81,11 @@ def list_logs():
         </form>"""
     content = f"""{head}<body>{content}</body>"""
     return HTMLResponse(content=content)
+
+
+@app.get("/logs.css")
+def open_log():
+    return FileResponse(path=f'styles/logs.css')
 
 
 @app.get("/logs/{log_name}")
