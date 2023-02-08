@@ -45,9 +45,16 @@ async def odii(request: Request):
 @app.post("/conclusion/full", status_code=201)
 async def eris(request: Request):
     request_body = await request.json()
-    # request_body = request_body.decode('utf-8')
-    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'ERIS')
+    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', f'ERIS')
     return {"message": "ERIS request received"}
+
+
+@app.post("/subscribe", status_code=200)
+async def subscribe(request: Request):
+    request_body = await request.json()
+    event = request_body['event']
+    print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', f'SUBSCRIBE_{event}')
+    return {"message": "ODII request received"}
 
 
 @app.get("/favicon.ico")
