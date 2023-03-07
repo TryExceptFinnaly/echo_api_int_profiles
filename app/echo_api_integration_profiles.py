@@ -49,7 +49,7 @@ async def eris(request: Request):
     return {"message": "ERIS request received"}
 
 
-@app.post("/subscribe/", status_code=404)
+@app.post("/subscribe/", status_code=200)
 async def subscribe(request: Request):
     request_body = await request.json()
     event = request_body['event']
