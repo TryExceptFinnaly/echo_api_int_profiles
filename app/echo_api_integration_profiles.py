@@ -21,12 +21,12 @@ def main():
     return {"message": "Welcome to my API server"}
 
 
-@app.post("/wsdl/EMDR", status_code=500)
+@app.post("/wsdl/EMDR", status_code=400)
 async def emdr_post(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
     print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'REMD')
-    return FileResponse(path="wsdl/bad_response.xml", media_type="application/xml")
+    return FileResponse(path="wsdl/invalid_format_soap_message.xml", media_type="application/xml")
 
 
 @app.get("/wsdl/EMDR")

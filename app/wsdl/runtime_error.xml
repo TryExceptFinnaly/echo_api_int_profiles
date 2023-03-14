@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+	<S:Header xmlns:S="http://www.w3.org/2003/05/soap-envelope">
+		<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+			<wsse:BinarySecurityToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" wsu:Id="X509-e5a7c46f-4e67-4ab9-8dcc-b1201341dd06">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</wsse:BinarySecurityToken>
+			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="SIG-6dce494f-3eee-4330-9bb1-9c83ee9fd13e">
+				<ds:SignedInfo>
+					<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+					<ds:SignatureMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256"/>
+					<ds:Reference URI="#body">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>q2McZ2drwfWTjzSdv97VIGQZp/9BfEv5UcYDpnQHRtk=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#TS-9e26c3d4-3521-40d9-bc46-fd26b079f982">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>q39P6grQ67LIkpGoRGKeUuoKv8Tv1vjpQvn1K0E/qvc=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#id-904b8168-2488-4961-a09b-ec5f50cace52">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>Wx4MKED80/d0zZWkVYnrvebi7hH3FdW2ZAwatTdfwCg=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#id-2faadd7f-358e-4432-8504-49e5fd34ff9a">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>80CQLwwZEYnBlEkElJhJDIm4TiTbINHCuqaQAOR9H/g=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#id-c65f9786-7ca0-4b76-9623-1878920f7f19">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>HvpiSiE/dyNFfmhIN+wzyCJshCFFi8mn9XgdCUdcW3k=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#id-d47ecb4d-c0ec-4d5b-a5be-3cbccf6b4384">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>FXGPALIessCf6RdA2e5KJPiHv/ITF/Ih70J2O8PWyaY=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#id-769dfc7e-a37f-4341-bc6a-c4f093077e23">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>vuOloZPB/E303+qolUsaUjjq5a95l9202kVwLwRdZDw=</ds:DigestValue>
+					</ds:Reference>
+				</ds:SignedInfo>
+				<ds:SignatureValue>lcuXPElv5G1IVEImjsfGJZ/N6cAwAIfcOaQEbMRIUv3fNMR8VsjLxk1HSnNEyfQrYcBKPzLLBUWVXsQGvuMZSw==</ds:SignatureValue>
+				<ds:KeyInfo Id="KI-64d94129-f366-43cd-bfce-4c1e23435299">
+					<wsse:SecurityTokenReference xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="STR-0207bd6c-e973-42dd-b18e-2232814589b4">
+						<wsse:Reference URI="#X509-e5a7c46f-4e67-4ab9-8dcc-b1201341dd06" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
+					</wsse:SecurityTokenReference>
+				</ds:KeyInfo>
+			</ds:Signature>
+			<wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="TS-9e26c3d4-3521-40d9-bc46-fd26b079f982">
+				<wsu:Created>2023-01-18T12:53:20.809Z</wsu:Created>
+				<wsu:Expires>2023-01-18T13:03:20.809Z</wsu:Expires>
+			</wsu:Timestamp>
+		</wsse:Security>
+		<transportHeader xmlns="http://egisz.rosminzdrav.ru" xmlns:ns2="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
+			<authInfo>
+				<clientEntityId>0743bcb9-8db0-761f-2f5d-57041c62c52d</clientEntityId>
+			</authInfo>
+		</transportHeader>
+		<To xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-904b8168-2488-4961-a09b-ec5f50cace52">http://ris.72to.ru:8833</To>
+		<Action xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-2faadd7f-358e-4432-8504-49e5fd34ff9a">sendRegisterDocumentResult</Action>
+		<ReplyTo xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-c65f9786-7ca0-4b76-9623-1878920f7f19">
+			<Address>http://www.w3.org/2005/08/addressing/anonymous</Address>
+		</ReplyTo>
+		<FaultTo xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-d47ecb4d-c0ec-4d5b-a5be-3cbccf6b4384">
+			<Address>http://www.w3.org/2005/08/addressing/anonymous</Address>
+		</FaultTo>
+		<MessageID xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-769dfc7e-a37f-4341-bc6a-c4f093077e23">uuid:90d3503a-441f-49ab-8947-a9fc8b2c7d21</MessageID>
+	</S:Header>
+<soap:Body>
+<ns2:registerDocumentResult xmlns="http://egisz.rosminzdrav.ru" xmlns:ns2="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
+	<ns2:relatesToMessage>d8a73930-fd1e-4129-8577-310a1ace4238</ns2:relatesToMessage>
+	<ns2:status>error</ns2:status>
+	<ns2:errors>
+		<ns2:item>
+			<ns2:code>RUNTIME_ERROR</ns2:code>
+			<ns2:message>Internal error</ns2:message>
+		</ns2:item>
+	</ns2:errors>
+</ns2:registerDocumentResult>
+</soap:Body>
+</soap:Envelope>
