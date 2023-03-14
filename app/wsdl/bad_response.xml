@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
+	<env:Header>
+		<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+			<wsse:BinarySecurityToken EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" wsu:Id="X509-2608dd73-cf8d-45d5-a013-d436d0fda28d">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</wsse:BinarySecurityToken>
+			<ds:Signature Id="SIG-29e20d65-f16e-43e8-9f8b-8b0a81cd99f6" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:SignedInfo>
+					<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+					<ds:SignatureMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256"/>
+					<ds:Reference URI="#id-70a93a27-90e9-450c-8387-d26b1a458a03">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>iXje+0KJaQbbNlzCSV45v4Djh+MaENZWW6e8I+vdXbQ=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference URI="#TS-09d524cc-d4e4-47c5-bfb0-f994faad2105">
+						<ds:Transforms>
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</ds:Transforms>
+						<ds:DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
+						<ds:DigestValue>JrrcbedIGUoJIQUWcsjhxiC+w/DH3RHw37WDqsukHeU=</ds:DigestValue>
+					</ds:Reference>
+				</ds:SignedInfo>
+				<ds:SignatureValue>1tABbOAsEUJjAN2CE1ghP/M25Smkb8wTEZCauy4L7YV+W5E3mEZDpwixipGJbIczO/qN8ghRDgvxUNXTVe+OVA==</ds:SignatureValue>
+				<ds:KeyInfo Id="KI-e6d14a83-0a71-4ae2-9722-c5a6eb395a22">
+					<wsse:SecurityTokenReference wsu:Id="STR-11e6ff79-f169-44be-8618-96f27d1b9673">
+						<wsse:Reference URI="#X509-2608dd73-cf8d-45d5-a013-d436d0fda28d" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
+					</wsse:SecurityTokenReference>
+				</ds:KeyInfo>
+			</ds:Signature>
+			<wsu:Timestamp wsu:Id="TS-09d524cc-d4e4-47c5-bfb0-f994faad2105">
+				<wsu:Created>2023-01-18T07:07:31.064Z</wsu:Created>
+				<wsu:Expires>2023-01-18T07:17:31.064Z</wsu:Expires>
+			</wsu:Timestamp>
+		</wsse:Security>
+	</env:Header>
+	<env:Body wsu:Id="id-70a93a27-90e9-450c-8387-d26b1a458a03" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+		<env:Fault>
+			<env:Code>
+				<env:Value>env:Sender</env:Value>
+				<env:Subcode>
+					<env:Value xmlns:ns1="https://ips.rosminzdrav.ru">ns1:GW-066</env:Value>
+				</env:Subcode>
+			</env:Code>
+			<env:Reason>
+				<env:Text xml:lang="ru">Доступ к сервису временно запрещён - для системы, соответствующей идентификатору fbd33aa5-5b3a-4586-b01a-9896ef4ce2fe, превышен лимит запросов к сервису</env:Text>
+			</env:Reason>
+		</env:Fault>
+	</env:Body>
+</env:Envelope>
