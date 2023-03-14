@@ -21,7 +21,7 @@ def main():
     return {"message": "Welcome to my API server"}
 
 
-@app.post("/wsdl/EMDR", status_code=201)
+@app.post("/wsdl/EMDR", status_code=400)
 async def emdr_post(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
