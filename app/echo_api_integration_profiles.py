@@ -26,8 +26,7 @@ async def emdr_post(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
     print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'REMD')
-    data = """
-    <?xml version="1.0"?>
+    data = """<?xml version="1.0"?>
     <ns3:errors>
         <ns3:item>
                 <ns3:code>INTERNAL_ERROR</ns3:code>
