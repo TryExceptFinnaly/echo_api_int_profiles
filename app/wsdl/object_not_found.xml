@@ -69,7 +69,7 @@
 				<wsu:Expires>2023-01-18T13:03:20.809Z</wsu:Expires>
 			</wsu:Timestamp>
 		</wsse:Security>
-		<transportHeader xmlns="http://egisz.rosminzdrav.ru" xmlns:ns2="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
+		<transportHeader xmlns="http://egisz.rosminzdrav.ru" xmlns:ns0="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
 			<authInfo>
 				<clientEntityId>0743bcb9-8db0-761f-2f5d-57041c62c52d</clientEntityId>
 			</authInfo>
@@ -85,15 +85,15 @@
 		<MessageID xmlns="http://www.w3.org/2005/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-769dfc7e-a37f-4341-bc6a-c4f093077e23">uuid:90d3503a-441f-49ab-8947-a9fc8b2c7d21</MessageID>
 	</S:Header>
 <soap:Body>
-<ns2:registerDocumentResult xmlns="http://egisz.rosminzdrav.ru" xmlns:ns2="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
-	<ns2:relatesToMessage>d8a73930-fd1e-4129-8577-310a1ace4238</ns2:relatesToMessage>
-	<ns2:status>error</ns2:status>
-	<ns2:errors>
-		<ns2:item>
-			<ns2:code>OBJECT_NOT_FOUND</ns2:code>
-			<ns2:message>multiple points</ns2:message>
-		</ns2:item>
-	</ns2:errors>
-</ns2:registerDocumentResult>
+<ns0:registerDocumentResult xmlns="http://egisz.rosminzdrav.ru" xmlns:ns0="http://egisz.rosminzdrav.ru/iehr/emdr/callback/">
+	<ns0:relatesToMessage>d8a73930-fd1e-4129-8577-310a1ace4238</ns0:relatesToMessage>
+	<ns0:status>error</ns0:status>
+	<ns0:errors>
+		<ns0:item>
+			<ns0:code>OBJECT_NOT_FOUND</ns0:code>
+			<ns0:message>multiple points</ns0:message>
+		</ns0:item>
+	</ns0:errors>
+</ns0:registerDocumentResult>
 </soap:Body>
 </soap:Envelope>
