@@ -1,9 +1,9 @@
 import os
+import starlette.status as status
 
 from fastapi import FastAPI, File, Request
 from datetime import datetime
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
-import starlette.status as status
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 
 app = FastAPI(
     title='Echo API server for integration profiles'
@@ -21,17 +21,26 @@ def main():
     return {"message": "Welcome to my API server"}
 
 
-@app.post("/wsdl/EMDR", status_code=400)
+@app.post("/wsdl/EMDR", status_code=500)
 async def emdr_post(request: Request):
     request_body = await request.body()
     request_body = request_body.decode('utf-8')
     print_requests_to_file(f'{request.headers}\n\nBody Data:\n{request_body}', 'REMD')
-    return {"message": "EMDR request received"}
+    data = """
+    <?xml version="1.0"?>
+    <ns3:errors>
+        <ns3:item>
+                <ns3:code>INTERNAL_ERROR</ns3:code>
+                <ns3:message>Внутренняя ошибка системы</ns3:message>
+        </ns3:item>
+    </ns3:errors>
+    """
+    return Response(content=data, media_type="application/xml")
 
 
 @app.get("/wsdl/EMDR")
 def emdr_get():
-    return FileResponse(path='wsdl/EMDR.xml', media_type='application/xml')
+    return FileResponse(path='wsdl/EMDR.xml', media_type="application/xml")
 
 
 @app.post("/odii", status_code=201)
